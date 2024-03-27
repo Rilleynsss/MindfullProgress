@@ -35,8 +35,10 @@ const Radian: FC<RadianProps> = ({ percent }) => {
           r={40}
           stroke={colors.green}
           strokeWidth={25}
-          strokeDasharray={314}
-          strokeDashoffset={-314 + 3.14 * percent}
+          strokeDasharray={2 * Math.PI * 40}
+          strokeDashoffset={
+            -(2 * Math.PI * 40) + ((2 * Math.PI * 40) / 100) * percent
+          }
           mask="url(#mask)"
         />
         <circle
