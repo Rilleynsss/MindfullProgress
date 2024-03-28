@@ -1,4 +1,5 @@
 import { FC } from "react";
+import cls from "../../style/layout.module.scss";
 
 interface RadianProps {
   percent: number;
@@ -9,22 +10,11 @@ const Radian: FC<RadianProps> = ({ percent }) => {
     green: "#7AE538",
   };
   return (
-    <div
-      style={{
-        position: "relative",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <svg
-        width={80}
-        style={{ transform: "rotate(270deg)", transformOrigin: "center" }}
-        height={80}
-      >
+    <div className={cls.radian}>
+      <svg>
         <mask id="mask">
-          <circle fill="white" width="80" height="80" cx="40" cy="40" r={40} />
-          <circle fill="black" width="80" height="80" cx="40" cy="40" r={30} />
+          <circle fill="white" cx="40" cy="40" r={40} />
+          <circle fill="black" cx="40" cy="40" r={30} />
         </mask>
         <circle
           fill="transparent"
@@ -55,13 +45,10 @@ const Radian: FC<RadianProps> = ({ percent }) => {
       </svg>
       <p
         style={{
-          position: "absolute",
-          fontWeight: 500,
-          fontSize: 30,
           color: colors.green,
         }}
       >
-        {percent}
+        {Math.round(percent)}
       </p>
     </div>
   );
