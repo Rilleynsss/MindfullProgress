@@ -1,6 +1,6 @@
 import { FC } from "react";
 import cls from "../../style/layout.module.scss";
-import Radian from "./Radian";
+import Radian, { RadianVariant } from "./Radian";
 import { useAppSelector } from "../../hooks/redux";
 
 const Statusbar: FC = () => {
@@ -12,8 +12,8 @@ const Statusbar: FC = () => {
     }
   });
   const percent = (complete / task.length) * 100;
-  const percent2 = 100;
-  const percent3 = 25;
+  const percent2 = 80;
+  const percent3 = 400;
   return (
     <div className={cls.layoutStatusbar}>
       <div
@@ -23,9 +23,13 @@ const Statusbar: FC = () => {
           width: "100%",
         }}
       >
-        <Radian percent={percent} />
-        <Radian percent={percent2} />
-        <Radian percent={percent3} />
+        <Radian variant={RadianVariant.green} percent={percent} />
+        <Radian variant={RadianVariant.orange} percent={percent2} />
+        <Radian
+          variant={RadianVariant.blue}
+          maxState={500}
+          percent={percent3}
+        />
       </div>
     </div>
   );
