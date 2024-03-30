@@ -8,6 +8,7 @@ export interface ITask {
   title: string;
   description: string;
   steps: number;
+  currentStep: number;
   timeStart: number;
   timeForStep: number;
   freeTime: number;

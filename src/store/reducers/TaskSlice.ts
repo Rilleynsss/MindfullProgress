@@ -12,6 +12,7 @@ const initialState: TaskState = {
       description:
         "Придумать отображение описание задания и реализовать переключение между заданиями. Так же добавить переключение активного класса и добавить класс для выполненных заданий",
       steps: 3,
+      currentStep: 0,
       timeStart: 0,
       timeForStep: 90,
       freeTime: 30,
@@ -23,6 +24,7 @@ const initialState: TaskState = {
       description:
         "Придумать отображение описание задания и реализовать переключение между заданиями. Так же добавить переключение активного класса и добавить класс для выполненных заданий",
       steps: 1,
+      currentStep: 0,
       timeStart: 0,
       timeForStep: 90,
       freeTime: 30,
@@ -34,6 +36,7 @@ const initialState: TaskState = {
       description:
         "Придумать отображение описание задания и реализовать переключение между заданиями. Так же добавить переключение активного класса и добавить класс для выполненных заданий",
       steps: 1,
+      currentStep: 0,
       timeStart: 0,
       timeForStep: 90,
       freeTime: 30,
@@ -51,6 +54,13 @@ export const TaskSlice = createSlice({
         if (item.id === payload.payload) {
           item.status.isActive = true;
         } else {
+          item.status.isActive = false;
+        }
+      });
+    },
+    disableAllTask(state) {
+      state.task.forEach((item) => {
+        if (item.status.isActive) {
           item.status.isActive = false;
         }
       });

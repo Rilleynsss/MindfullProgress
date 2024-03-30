@@ -4,19 +4,25 @@ import Button from "./../UI/Button";
 import { useAppDispathc, useAppSelector } from "../../hooks/redux";
 import { TaskSlice } from "../../store/reducers/TaskSlice";
 const TaskPage: FC = () => {
-  const { setActiveTask, setIsFinished } = TaskSlice.actions;
+  const { setActiveTask, setIsFinished, disableAllTask } = TaskSlice.actions;
   const dispatch = useAppDispathc();
 
   const { task } = useAppSelector((state) => state.task);
 
   return (
     <section className={cls.taskPage}>
-      <ul className={cls.taskList}>
+      <ul
+        className={cls.taskList}
+        onClick={(e) => {
+          dispatch(disableAllTask());
+        }}
+      >
         {task.map((item, idx) => {
           return (
             <li
               key={item.id}
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 dispatch(setActiveTask(item.id));
               }}
               className={item.status.isActive ? cls.active : ""}
@@ -35,7 +41,11 @@ const TaskPage: FC = () => {
                 <p>Описание: "{item.description}"</p>
                 <p>Количество шагов: {item.steps} </p>
                 <p>Время на шаг: {item.timeForStep} мин</p>
-                <Button onClick={() => dispatch(setIsFinished(item.id))}>
+                <Button
+                  onClick={(e) => {
+                    dispatch(setIsFinished(item.id));
+                  }}
+                >
                   Start
                 </Button>
               </Fragment>

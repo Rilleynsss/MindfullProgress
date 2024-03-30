@@ -1,16 +1,27 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import cls from "../../style/layout.module.scss";
 import Radian, { RadianVariant } from "./Radian";
 import { useAppSelector } from "../../hooks/redux";
+import { ITask } from "../../models/ITask";
 
 const Statusbar: FC = () => {
   const { task } = useAppSelector((state) => state.task);
+  const [currentItem, setCurrentItem] = useState<ITask | null>();
   let complete = 0;
   task.forEach((item) => {
     if (item.status.isFinish) {
       complete += 1;
     }
   });
+
+  useEffect(() => {
+    task.forEach((item, idx) => {
+      if (item.status.isActive) {
+        setCurrentItem(item);
+      }
+    });
+  }, [task]);
+
   const percent = (complete / task.length) * 100;
   const percent2 = 80;
   const percent3 = 400;
@@ -24,7 +35,10 @@ const Statusbar: FC = () => {
         }}
       >
         <Radian variant={RadianVariant.green} percent={percent} />
-        <Radian variant={RadianVariant.orange} percent={percent2} />
+
+        {currentItem ? (
+          <Radian variant={RadianVariant.orange} percent={percent2} />
+        ) : null}
         <Radian
           variant={RadianVariant.blue}
           maxState={500}
