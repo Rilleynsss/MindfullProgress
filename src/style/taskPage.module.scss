@@ -21,6 +21,10 @@
         &.active{
             color:#11F5E8;
         }
+        &.finish {
+            color: #7AE538;
+            text-decoration: line-through;
+        }
     }
 }
 .description{

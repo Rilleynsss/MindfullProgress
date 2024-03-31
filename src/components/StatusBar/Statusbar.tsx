@@ -5,8 +5,9 @@ import { useAppSelector } from "../../hooks/redux";
 import { ITask } from "../../models/ITask";
 
 const Statusbar: FC = () => {
-  const { task } = useAppSelector((state) => state.task);
+  const { task, active } = useAppSelector((state) => state.task);
   const [currentItem, setCurrentItem] = useState<ITask | null>();
+  const [percentCurrentTask, setPercentCurrentTask] = useState<number>(0);
   let complete = 0;
   task.forEach((item) => {
     if (item.status.isFinish) {
@@ -17,7 +18,7 @@ const Statusbar: FC = () => {
   useEffect(() => {
     task.forEach((item, idx) => {
       if (item.status.isActive) {
-        setCurrentItem(item);
+        setPercentCurrentTask((item.currentStep / item.steps) * 100);
       }
     });
   }, [task]);
@@ -36,8 +37,8 @@ const Statusbar: FC = () => {
       >
         <Radian variant={RadianVariant.green} percent={percent} />
 
-        {currentItem ? (
-          <Radian variant={RadianVariant.orange} percent={percent2} />
+        {active ? (
+          <Radian variant={RadianVariant.orange} percent={percentCurrentTask} />
         ) : null}
         <Radian
           variant={RadianVariant.blue}

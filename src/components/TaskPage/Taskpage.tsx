@@ -1,13 +1,25 @@
 import { FC, Fragment } from "react";
 import cls from "../../style/taskPage.module.scss";
-import Button from "./../UI/Button";
+import Button, { ButtonVariant } from "./../UI/Button";
 import { useAppDispathc, useAppSelector } from "../../hooks/redux";
 import { TaskSlice } from "../../store/reducers/TaskSlice";
+import { ITask } from "../../models/ITask";
+
 const TaskPage: FC = () => {
   const { setActiveTask, setIsFinished, disableAllTask } = TaskSlice.actions;
   const dispatch = useAppDispathc();
 
   const { task } = useAppSelector((state) => state.task);
+
+  const checkStatusButton = (item: ITask) => {
+    if (item.status.isFinish) {
+      return ButtonVariant.finish;
+    } else if (item.status.isStarted) {
+      return ButtonVariant.check;
+    } else {
+      return ButtonVariant.start;
+    }
+  };
 
   return (
     <section className={cls.taskPage}>
@@ -25,7 +37,10 @@ const TaskPage: FC = () => {
                 e.stopPropagation();
                 dispatch(setActiveTask(item.id));
               }}
-              className={item.status.isActive ? cls.active : ""}
+              className={[
+                item.status.isActive ? cls.active : "",
+                item.status.isFinish ? cls.finish : "",
+              ].join(" ")}
             >
               {item.title}
             </li>
@@ -33,7 +48,7 @@ const TaskPage: FC = () => {
         })}
       </ul>
       <div className={cls.description}>
-        {task.map((item) => {
+        {task.map((item, idx) => {
           if (item.status.isActive) {
             return (
               <Fragment key={item.id}>
@@ -42,8 +57,9 @@ const TaskPage: FC = () => {
                 <p>Количество шагов: {item.steps} </p>
                 <p>Время на шаг: {item.timeForStep} мин</p>
                 <Button
+                  variant={checkStatusButton(item)}
                   onClick={(e) => {
-                    dispatch(setIsFinished(item.id));
+                    dispatch(setIsFinished(idx));
                   }}
                 >
                   Start

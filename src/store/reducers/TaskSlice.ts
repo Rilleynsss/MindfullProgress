@@ -2,9 +2,11 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ITask } from "../../models/ITask";
 
 interface TaskState {
+  active: boolean;
   task: ITask[];
 }
 const initialState: TaskState = {
+  active: false,
   task: [
     {
       id: 0,
@@ -35,7 +37,7 @@ const initialState: TaskState = {
       title: "Закомитить все",
       description:
         "Придумать отображение описание задания и реализовать переключение между заданиями. Так же добавить переключение активного класса и добавить класс для выполненных заданий",
-      steps: 1,
+      steps: 4,
       currentStep: 0,
       timeStart: 0,
       timeForStep: 90,
@@ -50,6 +52,7 @@ export const TaskSlice = createSlice({
   initialState,
   reducers: {
     setActiveTask(state, payload: PayloadAction<number>) {
+      state.active = true;
       state.task.forEach((item) => {
         if (item.id === payload.payload) {
           item.status.isActive = true;
@@ -59,6 +62,8 @@ export const TaskSlice = createSlice({
       });
     },
     disableAllTask(state) {
+      state.active = false;
+
       state.task.forEach((item) => {
         if (item.status.isActive) {
           item.status.isActive = false;
@@ -66,11 +71,18 @@ export const TaskSlice = createSlice({
       });
     },
     setIsFinished(state, payload: PayloadAction<number>) {
-      state.task.forEach((item) => {
-        if (item.id === payload.payload) {
-          item.status.isFinish = true;
+      // state.task.forEach((item) => {
+      //   if (item.id === payload.payload) {
+      //     item.status.isFinish = true;
+      //   }
+      // });
+      const currentTask = state.task[payload.payload];
+      if (currentTask.currentStep < currentTask.steps) {
+        currentTask.currentStep += 1;
+        if (currentTask.currentStep === currentTask.steps) {
+          currentTask.status.isFinish = true;
         }
-      });
+      }
     },
   },
 });
