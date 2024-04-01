@@ -25,7 +25,10 @@
             color: #7AE538;
             text-decoration: line-through;
         }
-    }
+        &.start {
+            color: #E58B38;
+        }
+}
 }
 .description{
     grid-column: 2;

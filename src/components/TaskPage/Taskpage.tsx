@@ -4,11 +4,12 @@ import Button, { ButtonVariant } from "./../UI/Button";
 import { useAppDispathc, useAppSelector } from "../../hooks/redux";
 import { TaskSlice } from "../../store/reducers/TaskSlice";
 import { ITask } from "../../models/ITask";
+import { useTimer } from "../../hooks/useTimer";
 
 const TaskPage: FC = () => {
-  const { setActiveTask, setIsFinished, disableAllTask } = TaskSlice.actions;
+  const { setActiveTask, setIsStart, disableAllTask } = TaskSlice.actions;
   const dispatch = useAppDispathc();
-
+  const { setIsStarted, setIdx } = useTimer();
   const { task } = useAppSelector((state) => state.task);
 
   const checkStatusButton = (item: ITask) => {
@@ -19,6 +20,11 @@ const TaskPage: FC = () => {
     } else {
       return ButtonVariant.start;
     }
+  };
+
+  const buttonOnClick = (item: ITask, idx: number) => {
+    setIdx(idx);
+    dispatch(setIsStart(idx));
   };
 
   return (
@@ -39,6 +45,7 @@ const TaskPage: FC = () => {
               }}
               className={[
                 item.status.isActive ? cls.active : "",
+                item.status.isStarted ? cls.start : "",
                 item.status.isFinish ? cls.finish : "",
               ].join(" ")}
             >
@@ -59,7 +66,7 @@ const TaskPage: FC = () => {
                 <Button
                   variant={checkStatusButton(item)}
                   onClick={(e) => {
-                    dispatch(setIsFinished(idx));
+                    buttonOnClick(item, idx);
                   }}
                 >
                   Start

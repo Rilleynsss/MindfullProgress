@@ -16,7 +16,7 @@ const initialState: TaskState = {
       steps: 3,
       currentStep: 0,
       timeStart: 0,
-      timeForStep: 90,
+      timeForStep: 1,
       freeTime: 30,
       status: { isStarted: false, isActive: false, isFinish: false },
     },
@@ -28,7 +28,7 @@ const initialState: TaskState = {
       steps: 1,
       currentStep: 0,
       timeStart: 0,
-      timeForStep: 90,
+      timeForStep: 3,
       freeTime: 30,
       status: { isStarted: false, isActive: false, isFinish: false },
     },
@@ -40,7 +40,7 @@ const initialState: TaskState = {
       steps: 4,
       currentStep: 0,
       timeStart: 0,
-      timeForStep: 90,
+      timeForStep: 60,
       freeTime: 30,
       status: { isStarted: false, isActive: false, isFinish: false },
     },
@@ -70,16 +70,19 @@ export const TaskSlice = createSlice({
         }
       });
     },
-    setIsFinished(state, payload: PayloadAction<number>) {
-      // state.task.forEach((item) => {
-      //   if (item.id === payload.payload) {
-      //     item.status.isFinish = true;
-      //   }
-      // });
+    setIsStart(state, payload: PayloadAction<number>) {
       const currentTask = state.task[payload.payload];
+
       if (currentTask.currentStep < currentTask.steps) {
+        currentTask.status.isStarted = true;
         currentTask.currentStep += 1;
+      }
+    },
+    setIsFinished(state, payload: PayloadAction<number | null>) {
+      if (payload.payload) {
+        const currentTask = state.task[payload.payload];
         if (currentTask.currentStep === currentTask.steps) {
+          currentTask.status.isStarted = false;
           currentTask.status.isFinish = true;
         }
       }
