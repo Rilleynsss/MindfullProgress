@@ -9,8 +9,8 @@ export interface ITask {
   description: string;
   steps: number;
   currentStep: number;
-  timeStart: number;
   timeForStep: number;
+  timeLeft: number;
   freeTime: number;
   status: ITaskStatus;
 }

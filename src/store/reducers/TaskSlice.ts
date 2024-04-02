@@ -1,12 +1,14 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import { ITask } from "../../models/ITask";
 
 interface TaskState {
   active: boolean;
+  isStarted: boolean;
   task: ITask[];
 }
 const initialState: TaskState = {
   active: false,
+  isStarted: false,
   task: [
     {
       id: 0,
@@ -15,8 +17,8 @@ const initialState: TaskState = {
         "Придумать отображение описание задания и реализовать переключение между заданиями. Так же добавить переключение активного класса и добавить класс для выполненных заданий",
       steps: 3,
       currentStep: 0,
-      timeStart: 0,
-      timeForStep: 1,
+      timeForStep: 5,
+      timeLeft: 5,
       freeTime: 30,
       status: { isStarted: false, isActive: false, isFinish: false },
     },
@@ -27,8 +29,8 @@ const initialState: TaskState = {
         "Придумать отображение описание задания и реализовать переключение между заданиями. Так же добавить переключение активного класса и добавить класс для выполненных заданий",
       steps: 1,
       currentStep: 0,
-      timeStart: 0,
       timeForStep: 3,
+      timeLeft: 3,
       freeTime: 30,
       status: { isStarted: false, isActive: false, isFinish: false },
     },
@@ -39,8 +41,8 @@ const initialState: TaskState = {
         "Придумать отображение описание задания и реализовать переключение между заданиями. Так же добавить переключение активного класса и добавить класс для выполненных заданий",
       steps: 4,
       currentStep: 0,
-      timeStart: 0,
       timeForStep: 60,
+      timeLeft: 60,
       freeTime: 30,
       status: { isStarted: false, isActive: false, isFinish: false },
     },
@@ -61,6 +63,40 @@ export const TaskSlice = createSlice({
         }
       });
     },
+    startTimer(state) {
+      state.isStarted = true;
+      console.log("start timer");
+    },
+    stopTimer(state) {
+      state.isStarted = false;
+      console.log("stop timer");
+    },
+    checkTaskStatus(state, payload: PayloadAction<number>) {
+      const currentTask = state.task[payload.payload];
+      if (currentTask.currentStep < currentTask.steps) {
+        currentTask.status.isStarted = true;
+      }
+      if (currentTask.timeLeft === 0) {
+        state.task[payload.payload].timeLeft =
+          state.task[payload.payload].timeForStep;
+      }
+    },
+    changeTime(state, payload: PayloadAction<number>) {
+      const currentTask = state.task[payload.payload];
+
+      if (
+        currentTask.timeLeft === 0
+        // currentTask.currentStep < currentTask.steps
+      ) {
+        currentTask.currentStep = currentTask.currentStep + 1;
+      } else {
+        currentTask.timeLeft = currentTask.timeLeft - 1;
+      }
+      if (currentTask.currentStep === currentTask.steps) {
+        currentTask.status.isStarted = false;
+        currentTask.status.isFinish = true;
+      }
+    },
     disableAllTask(state) {
       state.active = false;
 
@@ -69,23 +105,6 @@ export const TaskSlice = createSlice({
           item.status.isActive = false;
         }
       });
-    },
-    setIsStart(state, payload: PayloadAction<number>) {
-      const currentTask = state.task[payload.payload];
-
-      if (currentTask.currentStep < currentTask.steps) {
-        currentTask.status.isStarted = true;
-        currentTask.currentStep += 1;
-      }
-    },
-    setIsFinished(state, payload: PayloadAction<number | null>) {
-      if (payload.payload) {
-        const currentTask = state.task[payload.payload];
-        if (currentTask.currentStep === currentTask.steps) {
-          currentTask.status.isStarted = false;
-          currentTask.status.isFinish = true;
-        }
-      }
     },
   },
 });

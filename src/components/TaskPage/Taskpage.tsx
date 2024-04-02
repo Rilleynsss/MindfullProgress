@@ -7,10 +7,10 @@ import { ITask } from "../../models/ITask";
 import { useTimer } from "../../hooks/useTimer";
 
 const TaskPage: FC = () => {
-  const { setActiveTask, setIsStart, disableAllTask } = TaskSlice.actions;
+  const { setActiveTask, disableAllTask, startTimer } = TaskSlice.actions;
   const dispatch = useAppDispathc();
-  const { setIsStarted, setIdx } = useTimer();
-  const { task } = useAppSelector((state) => state.task);
+  const { setIdx } = useTimer();
+  const { task, isStarted } = useAppSelector((state) => state.task);
 
   const checkStatusButton = (item: ITask) => {
     if (item.status.isFinish) {
@@ -23,8 +23,10 @@ const TaskPage: FC = () => {
   };
 
   const buttonOnClick = (item: ITask, idx: number) => {
-    setIdx(idx);
-    dispatch(setIsStart(idx));
+    if (!isStarted) {
+      setIdx(idx);
+      dispatch(startTimer());
+    }
   };
 
   return (
@@ -61,7 +63,9 @@ const TaskPage: FC = () => {
               <Fragment key={item.id}>
                 <h2>Задание: "{item.title}"</h2>
                 <p>Описание: "{item.description}"</p>
-                <p>Количество шагов: {item.steps} </p>
+                <p>
+                  Количество шагов: {item.currentStep}/{item.steps}{" "}
+                </p>
                 <p>Время на шаг: {item.timeForStep} мин</p>
                 <Button
                   variant={checkStatusButton(item)}

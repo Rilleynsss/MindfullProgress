@@ -1,22 +1,33 @@
 import { useEffect, useState } from "react";
 import { useAppDispathc, useAppSelector } from "./redux";
 import { TaskSlice } from "../store/reducers/TaskSlice";
-import { ITask } from "../models/ITask";
 
 export const useTimer = () => {
-  const { task } = useAppSelector((state) => state.task);
-  const [idx, setIdx] = useState<number>(-1);
-  const [currentTask, setCurrentTask] = useState<ITask>();
-  const { setIsFinished } = TaskSlice.actions;
-  const [isStarted, setIsStarted] = useState<boolean>(false);
-
+  const dispatch = useAppDispathc();
+  const { task, isStarted } = useAppSelector((state) => state.task);
+  const { checkTaskStatus, changeTime, stopTimer } = TaskSlice.actions;
+  const [idx, setIdx] = useState<number | null>(null);
   useEffect(() => {
-    setCurrentTask(task[idx]);
-    console.log(currentTask);
-    setTimeout(() => {
-      // dispatch(setIsFinished(idx));
-    }, 1000);
+    if (idx !== null) {
+      console.log("sasd");
+      if (isStarted) {
+        console.log("chk");
+        dispatch(checkTaskStatus(idx));
+      }
+    }
+  }, [isStarted]);
+  useEffect(() => {
+    if (idx !== null) {
+      if (task[idx].timeLeft === 0) {
+        dispatch(stopTimer());
+      }
+      if (isStarted) {
+        setTimeout(() => {
+          dispatch(changeTime(idx));
+        }, 1000);
+      }
+    }
   }, [task]);
 
-  return { setIsStarted, setIdx } as const;
+  return { setIdx } as const;
 };
