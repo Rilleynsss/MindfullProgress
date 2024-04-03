@@ -9,22 +9,23 @@ export const useTimer = () => {
   const [idx, setIdx] = useState<number | null>(null);
   useEffect(() => {
     if (idx !== null) {
-      console.log("sasd");
       if (isStarted) {
-        console.log("chk");
         dispatch(checkTaskStatus(idx));
       }
     }
   }, [isStarted]);
   useEffect(() => {
     if (idx !== null) {
-      if (task[idx].timeLeft === 0) {
-        dispatch(stopTimer());
-      }
-      if (isStarted) {
-        setTimeout(() => {
-          dispatch(changeTime(idx));
-        }, 1000);
+      if (task[idx].status.isActive && task[idx].status.isStarted) {
+        console.log(idx, "task id");
+        if (task[idx].timeLeft === 0) {
+          dispatch(stopTimer());
+        }
+        if (isStarted) {
+          setTimeout(() => {
+            dispatch(changeTime(idx));
+          }, 1000);
+        }
       }
     }
   }, [task]);

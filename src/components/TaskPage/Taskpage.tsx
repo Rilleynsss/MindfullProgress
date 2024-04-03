@@ -1,4 +1,4 @@
-import { FC, Fragment } from "react";
+import { FC, Fragment, useState } from "react";
 import cls from "../../style/taskPage.module.scss";
 import Button, { ButtonVariant } from "./../UI/Button";
 import { useAppDispathc, useAppSelector } from "../../hooks/redux";
@@ -23,7 +23,7 @@ const TaskPage: FC = () => {
   };
 
   const buttonOnClick = (item: ITask, idx: number) => {
-    if (!isStarted) {
+    if (!isStarted && item.steps !== item.currentStep) {
       setIdx(idx);
       dispatch(startTimer());
     }
@@ -43,7 +43,9 @@ const TaskPage: FC = () => {
               key={item.id}
               onClick={(e) => {
                 e.stopPropagation();
-                dispatch(setActiveTask(item.id));
+                isStarted
+                  ? console.log("выбранно другое задание")
+                  : dispatch(setActiveTask(item.id));
               }}
               className={[
                 item.status.isActive ? cls.active : "",
