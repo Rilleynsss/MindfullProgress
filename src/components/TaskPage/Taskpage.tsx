@@ -5,9 +5,11 @@ import { useAppDispathc, useAppSelector } from "../../hooks/redux";
 import { TaskSlice } from "../../store/reducers/TaskSlice";
 import { ITask } from "../../models/ITask";
 import { useTimer } from "../../hooks/useTimer";
+import { RootSetting } from "../../store/reducers/RootSetting";
 
 const TaskPage: FC = () => {
   const { setActiveTask, disableAllTask, startTimer } = TaskSlice.actions;
+  const { swipeModalActivity } = RootSetting.actions;
   const dispatch = useAppDispathc();
   const { setIdx } = useTimer();
   const { task, isStarted } = useAppSelector((state) => state.task);
@@ -44,7 +46,12 @@ const TaskPage: FC = () => {
               onClick={(e) => {
                 e.stopPropagation();
                 isStarted
-                  ? console.log("выбранно другое задание")
+                  ? dispatch(
+                      swipeModalActivity([
+                        true,
+                        "Выбрано другое задание. Пожалуйста, завершите в начале его, прежде чем брать следующее",
+                      ])
+                    )
                   : dispatch(setActiveTask(item.id));
               }}
               className={[
@@ -63,12 +70,18 @@ const TaskPage: FC = () => {
           if (item.status.isActive) {
             return (
               <Fragment key={item.id}>
-                <h2>Задание: "{item.title}"</h2>
-                <p>Описание: "{item.description}"</p>
-                <p>
-                  Количество шагов: {item.currentStep}/{item.steps}{" "}
+                <h2 className={item.status.isFinish ? cls.finish : ""}>
+                  Задание: "{item.title}"
+                </h2>
+                <p className={item.status.isFinish ? cls.finish : ""}>
+                  Описание: "{item.description}"
                 </p>
-                <p>Время на шаг: {item.timeForStep} мин</p>
+                <p className={item.status.isFinish ? cls.finish : ""}>
+                  Количество шагов: <span>{item.currentStep}</span>/{item.steps}{" "}
+                </p>
+                <p className={item.status.isFinish ? cls.finish : ""}>
+                  Время на шаг: {item.timeForStep} мин
+                </p>
                 <Button
                   variant={checkStatusButton(item)}
                   onClick={(e) => {

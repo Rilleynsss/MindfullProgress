@@ -36,4 +36,29 @@
     background:#595959;
     border-radius: 5px;
     padding: 25px;
+    color:#fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: start;
+    &.finish{
+        color:#ffffff5e;
+    }
+    & h2{
+        font-size: 35px;
+        &.finish {
+                color: #ffffff5e;
+            }
+    }
+    & p{
+        font-size: 20px;
+        padding: 10px 0;
+        max-width: 75%;
+        &.finish {
+                color: #ffffff5e;
+            }
+        & span{
+            color:#7AE538;
+        }
+    }
 }

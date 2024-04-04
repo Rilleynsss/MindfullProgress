@@ -5,6 +5,8 @@ import { useAppSelector } from "../../hooks/redux";
 
 const Statusbar: FC = () => {
   const { task, active } = useAppSelector((state) => state.task);
+  const { lvl } = useAppSelector((state) => state.root.profile);
+
   const [percentCurrentTask, setPercentCurrentTask] = useState<number>(0);
   let complete = 0;
   task.forEach((item) => {
@@ -41,6 +43,7 @@ const Statusbar: FC = () => {
           variant={RadianVariant.blue}
           maxState={500}
           percent={percent3}
+          text={lvl}
         />
       </div>
     </div>

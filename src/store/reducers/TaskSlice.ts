@@ -1,4 +1,4 @@
-import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ITask } from "../../models/ITask";
 
 interface TaskState {
@@ -65,11 +65,9 @@ export const TaskSlice = createSlice({
     },
     startTimer(state) {
       state.isStarted = true;
-      console.log("start timer");
     },
     stopTimer(state) {
       state.isStarted = false;
-      console.log("stop timer");
     },
     checkTaskStatus(state, payload: PayloadAction<number>) {
       const currentTask = state.task[payload.payload];

@@ -17,7 +17,6 @@ export const useTimer = () => {
   useEffect(() => {
     if (idx !== null) {
       if (task[idx].status.isActive && task[idx].status.isStarted) {
-        console.log(idx, "task id");
         if (task[idx].timeLeft === 0) {
           dispatch(stopTimer());
         }
