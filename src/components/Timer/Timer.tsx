@@ -30,7 +30,7 @@ const Timer: FC = () => {
           ? `${time.hour < 10 ? `0${time.hour}` : `${time.hour}`}:${
               time.minute < 10 ? `0${time.minute}` : `${time.minute}`
             }`
-          : null}
+          : "Select any task"}
       </p>
     </section>
   );

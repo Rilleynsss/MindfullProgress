@@ -15,8 +15,8 @@ const initialState: IRootSetting = {
     isActive: false,
   },
   profile: {
-    username: "user",
-    lvl: 2,
+    username: "Викуля",
+    lvl: 5,
   },
 };
 
