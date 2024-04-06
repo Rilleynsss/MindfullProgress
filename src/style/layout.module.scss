@@ -1,4 +1,4 @@
-.layout{
+.layout {
     width: 100%;
     padding: 35px;
     display: grid;
@@ -6,7 +6,8 @@
     grid-template-columns: 1fr 2fr 6fr 1fr;
     grid-template-rows: 1fr 8fr;
     gap: 35px;
-    &Navbar{
+
+    &Navbar {
         grid-row: 1/3;
         grid-column: 1/2;
         width: 100%;
@@ -15,8 +16,35 @@
         display: flex;
         justify-content: center;
         align-items: center;
+
+        & li {
+            & svg {
+            
+                & path {
+                    transition:.5s all ease;
+                    stroke: white;
+                }
+                & g {
+                // transition: .1s all ease;
+                    fill: white;
+                }
+
+            }
+        }
+        & li:hover {
+            & svg {
+                & path {
+                    stroke: #11F5E8;
+                }
+                & g {
+                    fill: #11F5E8;
+                }
+
+            }
+        }
     }
-    &Profile{
+
+    &Profile {
         grid-row: 1;
         grid-column: 4/5;
         background: #595959;
@@ -25,8 +53,11 @@
         align-items: center;
         justify-content: center;
         border-radius: 5px
-    };
-    &Statusbar{
+    }
+
+    ;
+
+    &Statusbar {
         grid-column: 2/3;
         grid-row: 1;
         width: 100%;
@@ -36,9 +67,12 @@
         display: flex;
         align-items: center;
         padding: 10px;
-        
-    };
-    &Timer{
+
+    }
+
+    ;
+
+    &Timer {
         grid-row: 1;
         grid-column: 3/4;
         width: 100%;
@@ -48,38 +82,49 @@
         display: flex;
         align-items: center;
         padding: 0 5%;
-        & p{
+
+        & p {
             font-size: 40px;
-            color:#fff;
+            color: #fff;
         }
-    };
-    &Content{
+    }
+
+    ;
+
+    &Content {
         grid-row: 2;
         grid-column: 2/4;
     }
 }
+
 .radian {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    svg{
+
+    svg {
         width: 80px;
         height: 80px;
         transform: rotate(270deg);
         transform-origin: center;
-        circle{
+
+        circle {
             transition: all .3s
         }
+
         #mask {
             width: 80px;
             height: 80px;
         }
-    };
-    p{
+    }
+
+    ;
+
+    p {
         position: absolute;
         font-weight: 500;
         font-size: 30px;
     }
-    
+
 }
