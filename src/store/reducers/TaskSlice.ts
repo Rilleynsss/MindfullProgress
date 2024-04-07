@@ -104,6 +104,9 @@ export const TaskSlice = createSlice({
         }
       });
     },
+    addNewTask(state, payload: PayloadAction<ITask>) {
+      state.task.push(payload.payload);
+    },
   },
 });
 
