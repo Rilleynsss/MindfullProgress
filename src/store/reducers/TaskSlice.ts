@@ -82,10 +82,7 @@ export const TaskSlice = createSlice({
     changeTime(state, payload: PayloadAction<number>) {
       const currentTask = state.task[payload.payload];
 
-      if (
-        currentTask.timeLeft === 0
-        // currentTask.currentStep < currentTask.steps
-      ) {
+      if (currentTask.timeLeft === 0) {
         currentTask.currentStep = currentTask.currentStep + 1;
       } else {
         currentTask.timeLeft = currentTask.timeLeft - 1;
@@ -93,6 +90,10 @@ export const TaskSlice = createSlice({
       if (currentTask.currentStep === currentTask.steps) {
         currentTask.status.isStarted = false;
         currentTask.status.isFinish = true;
+        state.task.forEach((item, idx) => {
+          if (item.status.isFinish) {
+          }
+        });
       }
     },
     disableAllTask(state) {

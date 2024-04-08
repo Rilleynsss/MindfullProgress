@@ -1,13 +1,16 @@
 import { FC, useEffect, useState } from "react";
 import cls from "../../style/layout.module.scss";
 import Radian, { RadianVariant } from "./Radian";
-import { useAppSelector } from "../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { RootSetting } from "../../store/reducers/RootSetting";
 
 const Statusbar: FC = () => {
   const { task, active } = useAppSelector((state) => state.task);
-  const { lvl } = useAppSelector((state) => state.root.profile);
-
+  const { exp, lvl, maxExp } = useAppSelector((state) => state.root.profile);
+  const dispatch = useAppDispatch();
   const [percentCurrentTask, setPercentCurrentTask] = useState<number>(0);
+  const { addExp, updateLocalStorage } = RootSetting.actions;
+
   let complete = 0;
   task.forEach((item) => {
     if (item.status.isFinish) {
@@ -15,8 +18,17 @@ const Statusbar: FC = () => {
     }
   });
 
+  const checkLvlStatus = () => {};
   useEffect(() => {
-    task.forEach((item, idx) => {
+    task.forEach((item) => {
+      if (item.status.isFinish) {
+        dispatch(addExp(300));
+        dispatch(updateLocalStorage());
+      }
+    });
+  }, [task]);
+  useEffect(() => {
+    task.forEach((item) => {
       if (item.status.isActive) {
         setPercentCurrentTask((item.currentStep / item.steps) * 100);
       }
@@ -24,7 +36,10 @@ const Statusbar: FC = () => {
   }, [task]);
 
   const percent = task.length !== 0 ? (complete / task.length) * 100 : 0;
-  const percent3 = 400;
+  const percent3 = localStorage.getItem("profile")
+    ? JSON.parse(localStorage["profile"]).lvl
+    : null;
+
   return (
     <div className={cls.layoutStatusbar}>
       <div
@@ -39,12 +54,14 @@ const Statusbar: FC = () => {
         {active ? (
           <Radian variant={RadianVariant.orange} percent={percentCurrentTask} />
         ) : null}
-        <Radian
-          variant={RadianVariant.blue}
-          maxState={500}
-          percent={percent3}
-          text={lvl}
-        />
+        {percent3 ? (
+          <Radian
+            variant={RadianVariant.blue}
+            maxState={maxExp}
+            percent={exp}
+            text={lvl}
+          />
+        ) : null}
       </div>
     </div>
   );

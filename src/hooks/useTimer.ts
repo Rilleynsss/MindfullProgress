@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { useAppDispathc, useAppSelector } from "./redux";
+import { useAppDispatch, useAppSelector } from "./redux";
 import { TaskSlice } from "../store/reducers/TaskSlice";
 
 export const useTimer = () => {
-  const dispatch = useAppDispathc();
+  const dispatch = useAppDispatch();
   const { task, isStarted } = useAppSelector((state) => state.task);
   const { checkTaskStatus, changeTime, stopTimer } = TaskSlice.actions;
   const [idx, setIdx] = useState<number | null>(null);

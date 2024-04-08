@@ -1,7 +1,7 @@
 import { FC, Fragment, useState } from "react";
 import cls from "../../style/taskPage.module.scss";
 import Button, { ButtonVariant } from "./../UI/Button";
-import { useAppDispathc, useAppSelector } from "../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { TaskSlice } from "../../store/reducers/TaskSlice";
 import { ITask } from "../../models/ITask";
 import { useTimer } from "../../hooks/useTimer";
@@ -10,7 +10,7 @@ import { RootSetting } from "../../store/reducers/RootSetting";
 const TaskPage: FC = () => {
   const { setActiveTask, disableAllTask, startTimer } = TaskSlice.actions;
   const { swipeModalActivity } = RootSetting.actions;
-  const dispatch = useAppDispathc();
+  const dispatch = useAppDispatch();
   const { setIdx } = useTimer();
   const { task, isStarted } = useAppSelector((state) => state.task);
 

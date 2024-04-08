@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import cls from "../../style/create.module.scss";
 import { ITask } from "./../../models/ITask";
-import { useAppDispathc } from "../../hooks/redux";
+import { useAppDispatch } from "../../hooks/redux";
 import { TaskSlice } from "../../store/reducers/TaskSlice";
 
 const CreateTaskPage: FC = () => {
@@ -16,7 +16,7 @@ const CreateTaskPage: FC = () => {
     freeTime: 0,
     status: { isActive: false, isFinish: false, isStarted: false },
   });
-  const dispatch = useAppDispathc();
+  const dispatch = useAppDispatch();
   const { addNewTask } = TaskSlice.actions;
   const add = () => {
     if (
