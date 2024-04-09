@@ -27,6 +27,7 @@ const CreateTaskPage: FC = () => {
       newTask.freeTime !== 0
     ) {
       dispatch(addNewTask(newTask));
+
       setNewTask({
         id: Date.now(),
         title: "",

@@ -3,30 +3,33 @@ import cls from "../../style/layout.module.scss";
 import Radian, { RadianVariant } from "./Radian";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { RootSetting } from "../../store/reducers/RootSetting";
+import { TaskSlice } from "../../store/reducers/TaskSlice";
+import { useLvlCheck } from "../../hooks/UseLvlCheck";
 
 const Statusbar: FC = () => {
-  const { task, active } = useAppSelector((state) => state.task);
+  const { task, active, isFinish } = useAppSelector((state) => state.task);
   const { exp, lvl, maxExp } = useAppSelector((state) => state.root.profile);
+  const [setCounter, setPrevValue, status] = useLvlCheck();
+  const [count, setCount] = useState(0);
   const dispatch = useAppDispatch();
   const [percentCurrentTask, setPercentCurrentTask] = useState<number>(0);
-  const { addExp, updateLocalStorage } = RootSetting.actions;
-
+  const { addExp } = RootSetting.actions;
   let complete = 0;
   task.forEach((item) => {
     if (item.status.isFinish) {
       complete += 1;
     }
   });
-
-  const checkLvlStatus = () => {};
   useEffect(() => {
-    task.forEach((item) => {
-      if (item.status.isFinish) {
-        dispatch(addExp(300));
-        dispatch(updateLocalStorage());
-      }
-    });
-  }, [task]);
+    setCounter(complete);
+  }, []);
+  // useEffect(() => {
+  //   setCounter(complete);
+  //   if (status) {
+  //     console.log("lvl up");
+  //   }
+  // }, [task]);
+
   useEffect(() => {
     task.forEach((item) => {
       if (item.status.isActive) {
@@ -36,10 +39,6 @@ const Statusbar: FC = () => {
   }, [task]);
 
   const percent = task.length !== 0 ? (complete / task.length) * 100 : 0;
-  const percent3 = localStorage.getItem("profile")
-    ? JSON.parse(localStorage["profile"]).lvl
-    : null;
-
   return (
     <div className={cls.layoutStatusbar}>
       <div
@@ -54,7 +53,7 @@ const Statusbar: FC = () => {
         {active ? (
           <Radian variant={RadianVariant.orange} percent={percentCurrentTask} />
         ) : null}
-        {percent3 ? (
+        {localStorage.getItem("profile") ? (
           <Radian
             variant={RadianVariant.blue}
             maxState={maxExp}

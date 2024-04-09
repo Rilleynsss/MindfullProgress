@@ -1,52 +1,57 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ITask } from "../../models/ITask";
+// import { ITask } from './../../models/ITask';
 
 interface TaskState {
   active: boolean;
   isStarted: boolean;
+  isFinish: number;
   task: ITask[];
 }
 const initialState: TaskState = {
   active: false,
   isStarted: false,
-  task: [
-    {
-      id: 0,
-      title: "Накидать макет",
-      description:
-        "Придумать отображение описание задания и реализовать переключение между заданиями. Так же добавить переключение активного класса и добавить класс для выполненных заданий",
-      steps: 3,
-      currentStep: 0,
-      timeForStep: 5,
-      timeLeft: 5,
-      freeTime: 30,
-      status: { isStarted: false, isActive: false, isFinish: false },
-    },
-    {
-      id: 1,
-      title: "Придумать стилизацию",
-      description:
-        "Придумать отображение описание задания и реализовать переключение между заданиями. Так же добавить переключение активного класса и добавить класс для выполненных заданий",
-      steps: 1,
-      currentStep: 0,
-      timeForStep: 3,
-      timeLeft: 3,
-      freeTime: 30,
-      status: { isStarted: false, isActive: false, isFinish: false },
-    },
-    {
-      id: 2,
-      title: "Закомитить все",
-      description:
-        "Придумать отображение описание задания и реализовать переключение между заданиями. Так же добавить переключение активного класса и добавить класс для выполненных заданий",
-      steps: 4,
-      currentStep: 0,
-      timeForStep: 60,
-      timeLeft: 60,
-      freeTime: 30,
-      status: { isStarted: false, isActive: false, isFinish: false },
-    },
-  ],
+  isFinish: localStorage["isFinish"] ? JSON.parse(localStorage["isFinish"]) : 0,
+  task: localStorage["task"]
+    ? JSON.parse(localStorage["task"])
+    : [
+        {
+          id: 0,
+          title: "Накидать макет",
+          description:
+            "Придумать отображение описание задания и реализовать переключение между заданиями. Так же добавить переключение активного класса и добавить класс для выполненных заданий",
+          steps: 3,
+          currentStep: 0,
+          timeForStep: 5,
+          timeLeft: 5,
+          freeTime: 30,
+          status: { isStarted: false, isActive: false, isFinish: false },
+        },
+        {
+          id: 1,
+          title: "Придумать стилизацию",
+          description:
+            "Придумать отображение описание задания и реализовать переключение между заданиями. Так же добавить переключение активного класса и добавить класс для выполненных заданий",
+          steps: 1,
+          currentStep: 0,
+          timeForStep: 3,
+          timeLeft: 3,
+          freeTime: 30,
+          status: { isStarted: false, isActive: false, isFinish: false },
+        },
+        {
+          id: 2,
+          title: "Закомитить все",
+          description:
+            "Придумать отображение описание задания и реализовать переключение между заданиями. Так же добавить переключение активного класса и добавить класс для выполненных заданий",
+          steps: 4,
+          currentStep: 0,
+          timeForStep: 60,
+          timeLeft: 60,
+          freeTime: 30,
+          status: { isStarted: false, isActive: false, isFinish: false },
+        },
+      ],
 };
 
 export const TaskSlice = createSlice({
@@ -90,15 +95,11 @@ export const TaskSlice = createSlice({
       if (currentTask.currentStep === currentTask.steps) {
         currentTask.status.isStarted = false;
         currentTask.status.isFinish = true;
-        state.task.forEach((item, idx) => {
-          if (item.status.isFinish) {
-          }
-        });
+        state.isFinish += 1;
       }
     },
     disableAllTask(state) {
       state.active = false;
-
       state.task.forEach((item) => {
         if (item.status.isActive) {
           item.status.isActive = false;
@@ -107,6 +108,18 @@ export const TaskSlice = createSlice({
     },
     addNewTask(state, payload: PayloadAction<ITask>) {
       state.task.push(payload.payload);
+    },
+    updateLocalStorageTask(state) {
+      localStorage.setItem("task", JSON.stringify(state.task));
+    },
+    updateCompleteCounter(state, payload: PayloadAction<number>) {
+      localStorage["isFinish"] = state.isFinish;
+      state.isFinish = payload.payload;
+      if (localStorage["isFinish"]) {
+        if (JSON.parse(localStorage["isFinish"]) < state.isFinish) {
+          localStorage["isFinish"] = state.isFinish;
+        }
+      }
     },
   },
 });

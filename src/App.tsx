@@ -4,11 +4,14 @@ import Modal from "./components/UI/Modal";
 import { useAppDispatch, useAppSelector } from "./hooks/redux";
 import { Outlet } from "react-router-dom";
 import { RootSetting } from "./store/reducers/RootSetting";
+import { TaskSlice } from "./store/reducers/TaskSlice";
 
 const App: FC = () => {
   const { isActive, text } = useAppSelector((state) => state.root.modal);
+  const { task } = useAppSelector((state) => state.task);
   const [isAuth, setIsAuth] = useState(false);
   const { addUserName, updateLocalStorage } = RootSetting.actions;
+  const { updateLocalStorageTask } = TaskSlice.actions;
   const { profile } = useAppSelector((state) => state.root);
   const dispatch = useAppDispatch();
   const setUser = (name: string) => {
@@ -16,7 +19,9 @@ const App: FC = () => {
     dispatch(updateLocalStorage());
   };
   useEffect(() => {
-    console.log(profile);
+    dispatch(updateLocalStorageTask());
+  }, [task]);
+  useEffect(() => {
     if (!profile.username || !localStorage.getItem("profile")) {
       setIsAuth(true);
     } else {
