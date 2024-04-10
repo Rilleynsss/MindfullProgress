@@ -59,8 +59,11 @@ export const TaskSlice = createSlice({
   initialState,
   reducers: {
     setActiveTask(state, payload: PayloadAction<number>) {
-      state.active = true;
       state.task.forEach((item) => {
+        if (item.status.isActive) {
+          state.active = true;
+        }
+
         if (item.id === payload.payload) {
           item.status.isActive = true;
         } else {
@@ -95,7 +98,6 @@ export const TaskSlice = createSlice({
       if (currentTask.currentStep === currentTask.steps) {
         currentTask.status.isStarted = false;
         currentTask.status.isFinish = true;
-        state.isFinish += 1;
       }
     },
     disableAllTask(state) {
@@ -113,13 +115,9 @@ export const TaskSlice = createSlice({
       localStorage.setItem("task", JSON.stringify(state.task));
     },
     updateCompleteCounter(state, payload: PayloadAction<number>) {
-      localStorage["isFinish"] = state.isFinish;
+      console.log("update");
       state.isFinish = payload.payload;
-      if (localStorage["isFinish"]) {
-        if (JSON.parse(localStorage["isFinish"]) < state.isFinish) {
-          localStorage["isFinish"] = state.isFinish;
-        }
-      }
+      localStorage["isFinish"] = state.isFinish;
     },
   },
 });

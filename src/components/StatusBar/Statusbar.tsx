@@ -7,13 +7,11 @@ import { TaskSlice } from "../../store/reducers/TaskSlice";
 import { useLvlCheck } from "../../hooks/UseLvlCheck";
 
 const Statusbar: FC = () => {
-  const { task, active, isFinish } = useAppSelector((state) => state.task);
+  const { task, active } = useAppSelector((state) => state.task);
   const { exp, lvl, maxExp } = useAppSelector((state) => state.root.profile);
-  const [setCounter, setPrevValue, status] = useLvlCheck();
+  const [setCounter, status] = useLvlCheck();
   const [count, setCount] = useState(0);
-  const dispatch = useAppDispatch();
   const [percentCurrentTask, setPercentCurrentTask] = useState<number>(0);
-  const { addExp } = RootSetting.actions;
   let complete = 0;
   task.forEach((item) => {
     if (item.status.isFinish) {
@@ -21,14 +19,19 @@ const Statusbar: FC = () => {
     }
   });
   useEffect(() => {
-    setCounter(complete);
-  }, []);
-  // useEffect(() => {
-  //   setCounter(complete);
-  //   if (status) {
-  //     console.log("lvl up");
-  //   }
-  // }, [task]);
+    setCount(0);
+    task.forEach((item, idx) => {
+      if (item.status.isFinish) {
+        setCount((prev) => prev + 1);
+      }
+    });
+  }, [task]);
+
+  useEffect(() => {
+    if (count !== 0) {
+      setCounter(count);
+    }
+  }, [count]);
 
   useEffect(() => {
     task.forEach((item) => {

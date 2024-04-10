@@ -1,16 +1,18 @@
 import { FC, useEffect, useState } from "react";
 import cls from "../../style/layout.module.scss";
-import { useAppSelector } from "../../hooks/redux";
-import { useTimer } from "../../hooks/useTimer";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { TaskSlice } from "../../store/reducers/TaskSlice";
 
 const Timer: FC = () => {
   const { task, active } = useAppSelector((state) => state.task);
   const [time, setTime] = useState({ hour: 0, minute: 0 });
-  const [isActive, setIsActive] = useState(false);
+  const dispatch = useAppDispatch();
+  const { setActiveTask } = TaskSlice.actions;
+
   useEffect(() => {
     task.forEach((item, idx) => {
       if (item.status.isActive) {
-        setIsActive(true);
+        dispatch(setActiveTask(item.id));
         const hour = 0 + Math.floor(item.timeLeft / 60);
         const minute = item.timeLeft % 60;
         setTime({ hour, minute });
@@ -18,15 +20,12 @@ const Timer: FC = () => {
         }
       }
     });
-    if (!active) {
-      setIsActive(false);
-    }
-  }, [task, active]);
+  }, [task]);
 
   return (
     <section className={cls.layoutTimer}>
       <p>
-        {isActive
+        {active
           ? `${time.hour < 10 ? `0${time.hour}` : `${time.hour}`}:${
               time.minute < 10 ? `0${time.minute}` : `${time.minute}`
             }`
