@@ -15,7 +15,8 @@
         border-radius: 5px;
         display: flex;
         justify-content: center;
-        align-items: center;
+        align-items: start;
+        padding: 20px;
 
         & li {
             & svg {
