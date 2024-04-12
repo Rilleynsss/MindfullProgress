@@ -1,18 +1,39 @@
-import { ChangeEvent, ChangeEventHandler, FC, HTMLAttributes } from "react";
+import { ChangeEvent, FC } from "react";
 import cls from "../../style/UI.module.scss";
 
-interface IInput
-  extends ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> {
+interface IInput {
   labelText?: string;
+  type: string;
+  placeholder?: string;
+  value?: string | number;
+  onChange?: (e: ChangeEvent<HTMLInputElement & HTMLTextAreaElement>) => void;
+  readOnly?: boolean;
 }
 
-const Input: FC<IInput> = (props) => {
+const Input: FC<IInput> = ({
+  labelText,
+  type,
+  placeholder,
+  value,
+  onChange,
+  readOnly,
+}) => {
   return (
     <>
-      {props.labelText ? (
-        <label htmlFor={props.labelText}>{props.labelText}</label>
+      {labelText ? (
+        <label className={cls.label} htmlFor={labelText}>
+          {labelText}
+        </label>
       ) : null}
-      <input id={props.labelText} {...props} className={cls.input} />
+      <input
+        id={labelText}
+        type={type}
+        placeholder={placeholder}
+        className={cls.input}
+        onChange={onChange}
+        value={value}
+        readOnly={readOnly}
+      />
     </>
   );
 };

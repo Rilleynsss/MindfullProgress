@@ -1,22 +1,35 @@
 .button{
     font-weight: 500;
     font-size: 30px;
-    
     background: transparent;
     border-radius: 5px;
-    padding: 3px 30px;
     cursor: pointer;
     &.start{
+    padding: 3px 30px;
         color: #11F5E8;
         border: 3px solid #11F5E8;
     }
     &.check{
+    padding: 3px 30px;
         color: #E58B38;
         border: 3px solid #E58B38;
     }
     &.finish{
+    padding: 3px 30px;
         color: #7AE538;
         border: 3px solid #7AE538;
+    }
+    &.small{
+        width: 30px;
+        height: 30px;
+        display: flex;
+        font-size: 20px;
+    font-weight: 600;
+        align-items: center;
+        justify-content: center;
+        padding: 5px 5px;
+            color: #11F5E8;
+            border: 3px solid #11F5E8;
     }
 }
 .modal{
@@ -31,7 +44,6 @@
     & .content{
         width: 35%;
         height: 25%;
-        // background-color: white;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -48,5 +60,21 @@
     }
 }
 .input{
-    
+    background: #0daba3;
+    backdrop-filter: blur(5px);
+    border:2px solid #11F5E8;
+    border-radius: 5px;
+    padding: 5px 10px;
+    color:rgb(37, 37, 37);
+    outline:none;
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+
+}
+.label{
+    font-size: 17px;
+        font-weight: 600;
+        color:#11F5E8;
+        letter-spacing: 2px;
 }

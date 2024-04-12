@@ -5,6 +5,7 @@ export enum ButtonVariant {
   start = "start",
   check = "check",
   finish = "finish",
+  small = "small",
 }
 
 interface IButtonProps extends HTMLAttributes<HTMLButtonElement> {
@@ -21,6 +22,8 @@ const Button: FC<IButtonProps> = (props) => {
         return [cls.button, cls.check].join(" ");
       case ButtonVariant.finish:
         return [cls.button, cls.finish].join(" ");
+      case ButtonVariant.small:
+        return [cls.button, cls.small].join(" ");
     }
   };
   return (

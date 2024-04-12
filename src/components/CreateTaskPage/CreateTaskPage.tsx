@@ -1,8 +1,10 @@
-import { FC, useState } from "react";
+import { ChangeEvent, FC, HTMLAttributes, useState } from "react";
 import cls from "../../style/create.module.scss";
 import { ITask } from "./../../models/ITask";
 import { useAppDispatch } from "../../hooks/redux";
 import { TaskSlice } from "../../store/reducers/TaskSlice";
+import Input from "../UI/Input";
+import Button, { ButtonVariant } from "../UI/Button";
 
 const CreateTaskPage: FC = () => {
   const [newTask, setNewTask] = useState<ITask>({
@@ -51,88 +53,120 @@ const CreateTaskPage: FC = () => {
       </ul>
       <div className={cls.form}>
         <form onSubmit={(e) => e.preventDefault()}>
-          <input
+          <Input
             type="text"
             placeholder="Название"
+            labelText="Title"
             value={newTask.title}
-            onChange={(e) =>
+            onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
               setNewTask((prev) => ({ ...prev, title: e.target.value }))
             }
           />
-          <input
+          <Input
             type="text"
             placeholder="Описание"
+            labelText="Description"
             value={newTask.description}
             onChange={(e) =>
               setNewTask((prev) => ({ ...prev, description: e.target.value }))
             }
           />
-          <div>
-            <input type="text" readOnly value={newTask.steps} />{" "}
-            <button
-              onClick={() => {
-                setNewTask((prev) => ({ ...prev, steps: prev.steps + 1 }));
-              }}
-            >
-              +
-            </button>
-            <button
-              onClick={() => {
-                setNewTask((prev) => ({ ...prev, steps: prev.steps - 1 }));
-              }}
-            >
-              -
-            </button>
+          <div className={cls.inputWithBtn}>
+            <Input
+              type="text"
+              readOnly
+              value={newTask.steps}
+              labelText="Steps"
+            />
+            <div>
+              <Button
+                variant={ButtonVariant.small}
+                onClick={() => {
+                  setNewTask((prev) => ({ ...prev, steps: prev.steps + 1 }));
+                }}
+              >
+                +
+              </Button>
+              <Button
+                variant={ButtonVariant.small}
+                onClick={() => {
+                  newTask.steps !== 0
+                    ? setNewTask((prev) => ({ ...prev, steps: prev.steps - 1 }))
+                    : console.log("min");
+                }}
+              >
+                -
+              </Button>
+            </div>
           </div>
-          <div>
-            <input type="text" readOnly value={newTask.timeForStep} />
-            <button
-              onClick={() => {
-                setNewTask((prev) => ({
-                  ...prev,
-                  timeForStep: prev.timeForStep + 5,
-                  timeLeft: prev.timeForStep + 5,
-                }));
-              }}
-            >
-              +
-            </button>
-            <button
-              onClick={() =>
-                setNewTask((prev) => ({
-                  ...prev,
-                  timeForStep: prev.timeForStep - 5,
-                  timeLeft: prev.timeForStep + 5,
-                }))
-              }
-            >
-              -
-            </button>
+          <div className={cls.inputWithBtn}>
+            <Input
+              type="text"
+              readOnly
+              labelText="Time For Step"
+              value={newTask.timeForStep}
+            />
+            <div>
+              <Button
+                variant={ButtonVariant.small}
+                onClick={() => {
+                  setNewTask((prev) => ({
+                    ...prev,
+                    timeForStep: prev.timeForStep + 5,
+                    timeLeft: prev.timeForStep + 5,
+                  }));
+                }}
+              >
+                +
+              </Button>
+              <Button
+                variant={ButtonVariant.small}
+                onClick={() =>
+                  newTask.timeForStep !== 0
+                    ? setNewTask((prev) => ({
+                        ...prev,
+                        timeForStep: prev.timeForStep - 5,
+                        timeLeft: prev.timeForStep + 5,
+                      }))
+                    : console.log("min")
+                }
+              >
+                -
+              </Button>
+            </div>
           </div>
-          <div>
-            <input type="text" readOnly value={newTask.freeTime} />
-            <button
-              onClick={() => {
-                setNewTask((prev) => ({
-                  ...prev,
-                  freeTime: prev.freeTime + 5,
-                }));
-              }}
-            >
-              +
-            </button>
-            <button
-              onClick={() =>
-                setNewTask((prev) => ({
-                  ...prev,
-                  freeTime: prev.freeTime - 5,
-                }))
-              }
-            >
-              -
-            </button>
+          <div className={cls.inputWithBtn}>
+            <Input type="text" readOnly value={newTask.freeTime} />
+            <div>
+              <Button
+                variant={ButtonVariant.small}
+                onClick={() => {
+                  setNewTask((prev) => ({
+                    ...prev,
+                    freeTime: prev.freeTime + 5,
+                  }));
+                }}
+              >
+                +
+              </Button>
+              <Button
+                variant={ButtonVariant.small}
+                onClick={() =>
+                  newTask.freeTime !== 0
+                    ? setNewTask((prev) => ({
+                        ...prev,
+                        freeTime: prev.freeTime - 5,
+                      }))
+                    : console.log("min")
+                }
+              >
+                -
+              </Button>
+            </div>
           </div>
-          <button onClick={add}>add</button>
+          <Button variant={ButtonVariant.finish} onClick={add}>
+            add
+          </Button>
         </form>
       </div>
     </div>

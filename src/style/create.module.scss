@@ -7,7 +7,7 @@
     // background-color: darkblue;
     & .whereIs{
         grid-column: 1/2;
-        background: #0000007e;
+        background: #595959;
         border-radius: 5px ;
         padding: 20px;
         color:#fff;
@@ -16,10 +16,20 @@
     & .form{
         grid-column: 2/3;
         padding: 20px;
+        background-color: #595959;
+        border-radius: 5px;
         & form{
             display: flex;
             flex-direction: column;
             align-items: start;
+            & .inputWithBtn{
+                display: flex;
+                flex-direction: column;
+                & div{
+                    display: flex;
+                    margin-bottom: 10px;
+                }
+            }
         }
     }
 }
