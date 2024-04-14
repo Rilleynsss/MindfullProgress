@@ -23,7 +23,7 @@ export const useTimer = () => {
         if (isStarted) {
           setTimeout(() => {
             dispatch(changeTime(idx));
-          }, 1000);
+          }, 1000 * 60);
         }
       }
     }

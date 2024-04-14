@@ -12,46 +12,7 @@ const initialState: TaskState = {
   active: false,
   isStarted: false,
   isFinish: localStorage["isFinish"] ? JSON.parse(localStorage["isFinish"]) : 0,
-  task: localStorage["task"]
-    ? JSON.parse(localStorage["task"])
-    : [
-        {
-          id: 0,
-          title: "Накидать макет",
-          description:
-            "Придумать отображение описание задания и реализовать переключение между заданиями. Так же добавить переключение активного класса и добавить класс для выполненных заданий",
-          steps: 3,
-          currentStep: 0,
-          timeForStep: 5,
-          timeLeft: 5,
-          freeTime: 30,
-          status: { isStarted: false, isActive: false, isFinish: false },
-        },
-        {
-          id: 1,
-          title: "Придумать стилизацию",
-          description:
-            "Придумать отображение описание задания и реализовать переключение между заданиями. Так же добавить переключение активного класса и добавить класс для выполненных заданий",
-          steps: 1,
-          currentStep: 0,
-          timeForStep: 3,
-          timeLeft: 3,
-          freeTime: 30,
-          status: { isStarted: false, isActive: false, isFinish: false },
-        },
-        {
-          id: 2,
-          title: "Закомитить все",
-          description:
-            "Придумать отображение описание задания и реализовать переключение между заданиями. Так же добавить переключение активного класса и добавить класс для выполненных заданий",
-          steps: 4,
-          currentStep: 0,
-          timeForStep: 60,
-          timeLeft: 60,
-          freeTime: 30,
-          status: { isStarted: false, isActive: false, isFinish: false },
-        },
-      ],
+  task: localStorage["task"] ? JSON.parse(localStorage["task"]) : [],
 };
 
 export const TaskSlice = createSlice({
